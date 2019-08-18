@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         //
 
 
-        mediaPlayer("http://almacenvideos.placertv.com/SUBIR_VIDEOS/15716_3.mp4",video);
+        mediaPlayer("",video);
 
 
     }
