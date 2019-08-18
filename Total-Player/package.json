@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-Total-Player",
+  "version": "0.0.1",
+  "description": "",
+  "cordova": {
+    "id": "cordova-plugin-Total-Player",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domlopluis94/Cordova-Total-Player.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Luis Dominguez Lopez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/domlopluis94/Cordova-Total-Player/issues"
+  },
+  "homepage": "https://github.com/domlopluis94/Cordova-Total-Player#readme"
+}
