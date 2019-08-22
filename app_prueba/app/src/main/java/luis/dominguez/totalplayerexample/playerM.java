@@ -29,15 +29,23 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.Session;
 import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.SessionProvider;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.GoogleApiAvailability;
+
+import java.util.List;
+
+import static com.google.android.gms.cast.framework.CastContext.getSharedInstance;
 
 public class playerM extends AppCompatActivity {
 
-    public luis.dominguez.totalplayerexample.VideoViewCustom video;
+    public VideoView video;
     private String videoPath ="url";
     private static ProgressDialog progressDialog;
     public ImageButton botondeCast;
@@ -59,7 +67,7 @@ public class playerM extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         try {
             mCastContext = CastContext.getSharedInstance(this);
-            mMediaRouteButton = (androidx.mediarouter.app.MediaRouteButton) findViewById(R.id.media_route_button);
+            mMediaRouteButton = findViewById(R.id.media_route_button);
             CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
             mSessionManager = mCastContext.getSessionManager();
         }catch (Exception e){
@@ -72,7 +80,7 @@ public class playerM extends AppCompatActivity {
             videoMetadata.putString(MediaMetadata.KEY_TITLE, "Total Player");
             videoMetadata.putString(MediaMetadata.KEY_SUBTITLE, "");
         }catch (Exception e){
-
+            Log error;
         }
 
         video = findViewById(R.id.videoView);
@@ -82,21 +90,14 @@ public class playerM extends AppCompatActivity {
 
             @Override
             public void run() {
-                video.setDimensions(getScreenWidth(), (video.getHeight()/2));
-                Log.e("","datos del video : "+getScreenWidth()+" "+getScreenHeight());
+               // video.setDimensions(getScreenWidth(), (video.getHeight()));
+               // Log.e("","datos del video : "+getScreenWidth()+" "+getScreenHeight());
             }
         });
 
         Intent intent = getIntent();
         uri = intent.getStringExtra("url");
         mediaPlayer(uri,video);
-
-        //ORIENTATION_LANDSCAPE
-
-
-
-        //Orientation_portrait
-
 
     }
 
@@ -130,16 +131,7 @@ public class playerM extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(botondeCast.getVisibility()==View.VISIBLE) {
-            botondeCast.setVisibility(View.INVISIBLE);
-            return true;
-        }else {
-            botondeCast.setVisibility(View.VISIBLE);
-            return true;
-        }
-    }
+
     /**
      *
      * @param url
@@ -189,14 +181,14 @@ public class playerM extends AppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            video.setDimensions(20, 20);
-            video.getHolder().setFixedSize(20, 20);
+            //video.setDimensions(20, 20);
+            //video.getHolder().setFixedSize(20, 20);
 
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
-            video.setDimensions(35, 35);
-            video.getHolder().setFixedSize(35, 35);
+            //video.setDimensions(35, 35);
+            //video.getHolder().setFixedSize(35, 35);
 
         }
     }

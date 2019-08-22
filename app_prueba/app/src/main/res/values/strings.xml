@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TotalPlayerExample</string>
+    <string name="app_id"></string>
     <string name="media_route_menu_title">playertotal</string>
 </resources>

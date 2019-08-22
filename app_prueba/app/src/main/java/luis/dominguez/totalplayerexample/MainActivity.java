@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
         exob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                i= new Intent(MainActivity.this, ExoplayerPlayer.class);
+                i.putExtra("url", texturl.getText().toString());
+                startActivity(i);
             }
         });
 
