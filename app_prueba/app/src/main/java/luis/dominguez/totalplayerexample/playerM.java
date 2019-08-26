@@ -1,9 +1,5 @@
 package luis.dominguez.totalplayerexample;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
-import android.app.MediaRouteButton;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,18 +9,19 @@ import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.mediarouter.app.MediaRouteButton;
+import androidx.mediarouter.media.MediaRouteSelector;
+
+import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.framework.CastButtonFactory;
@@ -37,13 +34,10 @@ import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.cast.framework.SessionProvider;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.List;
 
-import static com.google.android.gms.cast.framework.CastContext.getSharedInstance;
-
-public class playerM extends AppCompatActivity {
+public class playerM extends FragmentActivity {
 
     public VideoView video;
     private String videoPath ="url";
@@ -65,22 +59,29 @@ public class playerM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_m);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         try {
             mCastContext = CastContext.getSharedInstance(this);
-            mMediaRouteButton = findViewById(R.id.media_route_button);
-            CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
             mSessionManager = mCastContext.getSessionManager();
-        }catch (Exception e){
-            Log error;
 
+            MediaRouteSelector mMediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(CastMediaControlIntent.categoryForCast(getString(R.string.app_id))).build();
+            mMediaRouteButton =(MediaRouteButton) findViewById(R.id.media_route_button);
+            mMediaRouteButton.setRouteSelector(mMediaRouteSelector);
+            CastButtonFactory.setUpMediaRouteButton(this, mMediaRouteButton);
+            Log.e("","Exception CastButtonFactory. : " + this + mMediaRouteButton);
+
+        }catch (Exception e){
+
+            Log.e("","Exception cast : "+e);
         }
 
         try{
-            videoMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
+            videoMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_TV_SHOW);
             videoMetadata.putString(MediaMetadata.KEY_TITLE, "Total Player");
             videoMetadata.putString(MediaMetadata.KEY_SUBTITLE, "");
         }catch (Exception e){
-            Log error;
+            Log.e("","Exception videomNetadata : "+e);
         }
 
         video = findViewById(R.id.videoView);
@@ -90,8 +91,7 @@ public class playerM extends AppCompatActivity {
 
             @Override
             public void run() {
-               // video.setDimensions(getScreenWidth(), (video.getHeight()));
-               // Log.e("","datos del video : "+getScreenWidth()+" "+getScreenHeight());
+                CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
             }
         });
 
@@ -115,8 +115,9 @@ public class playerM extends AppCompatActivity {
         try{
             mCastSession = mSessionManager.getCurrentCastSession();
             mSessionManager.addSessionManagerListener(mSessionManagerListener);
+            mMediaRouteButton.setVisibility(View.VISIBLE);
         }catch (Exception e){
-
+            Log.e("","Exception resume : "+e);
         }
     }
 
@@ -127,7 +128,7 @@ public class playerM extends AppCompatActivity {
             mSessionManager.removeSessionManagerListener(mSessionManagerListener);
             mCastSession = null;
         }catch (Exception e){
-
+            Log.e("","Exception cast : "+e);
         }
     }
 
@@ -210,11 +211,7 @@ public class playerM extends AppCompatActivity {
             loadMedia(mCastSession);
         }
         private void loadMedia(CastSession castSession) {
-            MediaInfo mediaInfo = new MediaInfo.Builder(uri)
-                    .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                    .setContentType("videos/mp4")
-                    .setMetadata(videoMetadata)
-                    .build();
+            MediaInfo mediaInfo = new MediaInfo.Builder(uri).setStreamType(MediaInfo.STREAM_TYPE_BUFFERED).setContentType("videos/hls").setMetadata(videoMetadata).build();
             RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
             remoteMediaClient.load(mediaInfo);
         }
@@ -240,5 +237,18 @@ public class playerM extends AppCompatActivity {
         public void onSessionSuspended(Session session, int i) {}
     }
 
+    public class CastOptionsProvider implements OptionsProvider {
 
+        @Override
+        public CastOptions getCastOptions(Context context) {
+            Log.e("","get cast options : "+ context.getString(R.string.app_id));
+            return new CastOptions.Builder().setReceiverApplicationId(context.getString(R.string.app_id)).build();
+
+        }
+
+        @Override
+        public List<SessionProvider> getAdditionalSessionProviders(Context context) {
+            return null;
+        }
+    }
 }
