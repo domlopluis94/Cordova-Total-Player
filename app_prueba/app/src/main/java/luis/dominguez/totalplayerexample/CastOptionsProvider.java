@@ -5,6 +5,7 @@ import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 
@@ -13,7 +14,13 @@ public class CastOptionsProvider implements OptionsProvider {
 
     @Override
     public CastOptions getCastOptions(Context context) {
-        return new CastOptions.Builder().setReceiverApplicationId(context.getString(R.string.app_id)).build();
+        try {
+            CastOptions castp = new CastOptions.Builder().setReceiverApplicationId(context.getString(R.string.app_id)).build();
+            return castp;
+        }catch (Exception e){
+            Log.e("GetCastOptions","get cast options Error: "+ e);
+        }
+        return null;
     }
 
     @Override

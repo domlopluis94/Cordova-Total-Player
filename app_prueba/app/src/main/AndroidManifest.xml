@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="luis.dominguez.totalplayerexample">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".ExoplayerPlayer"></activity>
+        <activity android:name=".ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize">
+
+        </activity>
         <activity
             android:name=".playerM"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
