@@ -1,2 +1,55 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-Total-Player" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"><name>Total-Player</name><js-module name="Total-Player" src="www/Total-Player.js"><clobbers target="cordova.plugins.Total-Player" /></js-module><platform name="android"><config-file parent="/*" target="res/xml/config.xml"><feature name="Total-Player"><param name="android-package" value="cordova-plugin-Total-Player.Total-Player" /></feature></config-file><config-file parent="/*" target="AndroidManifest.xml" /><source-file src="src/android/Total-Player.java" target-dir="src/cordova-plugin-Total-Player/Total-Player" /></platform><platform name="ios"><config-file parent="/*" target="config.xml"><feature name="Total-Player"><param name="ios-package" value="Total-Player" /></feature></config-file><source-file src="src/ios/Total-Player.m" /></platform></plugin>
+<plugin id="cordova-plugin-Total-Player" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>Total-Player</name>
+	<js-module name="Total-Player" src="www/TotalPlayer.js">
+		<clobbers target="cordova.plugins.Total-Player" />
+	</js-module>
+	<platform name="android">
+		<!-- Build Gradle -->
+		<framework src="com.google.android.exoplayer:exoplayer:2.10.4"/>
+		<framework src="androidx.mediarouter:mediarouter:1.1.0-rc01"/>
+        <framework src="com.google.android.gms:play-services-cast-framework:17.0.0"/>
+		<framework src="androidx.constraintlayout:constraintlayout:2.0.0-beta2"/>
+        <!-- Manifest Android -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+			    <uses-permission android:name="android.permission.INTERNET"/>
+			    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+		</config-file>
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity android:name="total.player.ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
+        	<activity android:name="total.player.playerM" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:screenOrientation="landscape" />
+		</config-file>
+
+		<!-- rest Android -->
+		<source-file src="src/res/layout/activity_exoplayer_player.xml" target-dir="res/layout/"/>
+		<source-file src="src/res/layout/activity_player_m.xml" target-dir="res/layout/"/>
+		<!-- Values Android -->
+		<source-file src="src/res/values/idPlayer.xml" target-dir="res/values/"/>
+		<source-file src="src/res/values/styles.xml" target-dir="res/values/"/>
+		<source-file src="src/res/values/colors.xml" target-dir="res/values/"/>
+
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="Total-Player">
+				<param name="android-package" value="cordova.plugin.total.player" />
+			</feature>
+		</config-file>
+
+		<!-- java Android -->
+		<source-file src="src/android/TotalPlayer.java" target-dir="src/total/player/" />
+		<source-file src="src/android/ExoplayerPlayer.java" target-dir="src/total/player/" />
+		<source-file src="src/android/playerM.java" target-dir="src/total/player/" />
+		<source-file src="src/android/CastOptionsProvider.java" target-dir="src/total/player/" />
+		<source-file src="src/android/VideoViewCustom.java" target-dir="src/total/player/" />
+	<!-- Fin Android -->
+	</platform>
+	<platform name="ios">
+		<config-file parent="/*" target="config.xml">
+			<feature name="Total-Player">
+				<param name="ios-package" value="Total-Player" />
+			</feature>
+		</config-file>
+		<source-file src="src/ios/Total-Player.m" />
+	</platform>
+</plugin>

@@ -1,7 +1,7 @@
 {
   "name": "cordova-plugin-Total-Player",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "Reproductor mediaplayer,vlc y exoplayer para Android",
   "cordova": {
     "id": "cordova-plugin-Total-Player",
     "platforms": [
