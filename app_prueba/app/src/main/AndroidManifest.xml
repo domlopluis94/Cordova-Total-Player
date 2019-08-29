@@ -18,15 +18,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize">
-
-        </activity>
-        <activity
-            android:name=".playerM"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:screenOrientation="landscape">
-
-        </activity>
+        <activity android:name=".ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
+        <activity android:name=".playerM" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
