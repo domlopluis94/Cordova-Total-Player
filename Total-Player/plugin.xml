@@ -2,7 +2,7 @@
 <plugin id="cordova-plugin-Total-Player" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>Total-Player</name>
 	<js-module name="Total-Player" src="www/TotalPlayer.js">
-		<clobbers target="cordova.plugins.Total-Player" />
+		<clobbers target="totalplayer" />
 	</js-module>
 	<platform name="android">
 		<!-- Build Gradle -->
@@ -18,8 +18,12 @@
 			    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 		</config-file>
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-			<activity android:name="total.player.ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
-        	<activity android:name="total.player.playerM" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:screenOrientation="landscape" />
+			<!--android:usesCleartextTraffic="true"-->
+			<activity android:name="total.player.ExoplayerPlayer" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:theme="@style/AppTheme" />
+        	<activity android:name="total.player.playerM" android:configChanges="orientation|keyboard|keyboardHidden|screenSize" android:screenOrientation="landscape" android:theme="@style/AppTheme" />
+        	<meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="total.player.CastOptionsProvider" />
 		</config-file>
 
 		<!-- rest Android -->
@@ -31,8 +35,8 @@
 		<source-file src="src/res/values/colors.xml" target-dir="res/values/"/>
 
 		<config-file parent="/*" target="res/xml/config.xml">
-			<feature name="Total-Player">
-				<param name="android-package" value="cordova.plugin.total.player" />
+			<feature name="TotalPlayer">
+				<param name="android-package" value="total.player.TotalPlayer" />
 			</feature>
 		</config-file>
 
