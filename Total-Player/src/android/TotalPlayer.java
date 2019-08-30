@@ -65,15 +65,11 @@ public class TotalPlayer extends CordovaPlugin {
     private void exoPlayer(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             try{
-                cordova.getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        i= new Intent(cordova.getActivity(), ExoplayerPlayer.class);
-                        i.putExtra("url", message);
-                        CordovaPlugin plug = new CordovaPlugin();
-                        cordova.startActivityForResult(plug,i,42);
-                        callbackContext.success(); // Thread-safe.
-                    }
-                });
+                i= new Intent(cordova.getActivity(), ExoplayerPlayer.class);
+                i.putExtra("url", message);
+                CordovaPlugin plug = new CordovaPlugin();
+                cordova.startActivityForResult(plug,i,42);
+                callbackContext.success(); // Thread-safe.
             }catch(Exception e){
                 callbackContext.error("Error en el Reproductor.");
             }
@@ -85,15 +81,11 @@ public class TotalPlayer extends CordovaPlugin {
     private void mediaPlayer(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             try{
-                cordova.getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        i= new Intent(cordova.getActivity(), playerM.class);
-                        i.putExtra("url", message);
-                        CordovaPlugin plug = new CordovaPlugin();
-                        cordova.startActivityForResult(plug,i,42);
-                        callbackContext.success(); // Thread-safe.
-                    }
-                });
+                i= new Intent(cordova.getActivity(), playerM.class);
+                i.putExtra("url", message);
+                CordovaPlugin plug = new CordovaPlugin();
+                cordova.startActivityForResult(plug,i,42);
+                callbackContext.success(); // Thread-safe.
             }catch(Exception e){
                 callbackContext.error("Error en el Reproductor.");
             }
