@@ -6,9 +6,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.mediarouter.app.MediaRouteButton;
+import androidx.mediarouter.media.MediaRouteSelector;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -36,6 +40,16 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.Session;
+import com.google.android.gms.cast.framework.SessionManager;
+import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 
 public class ExoplayerPlayer extends AppCompatActivity {
     SimpleExoPlayer player;
@@ -44,11 +58,42 @@ public class ExoplayerPlayer extends AppCompatActivity {
     String uri;
     Player.EventListener eventListener;
     SimpleExoPlayer exoPlayer;
+    private androidx.mediarouter.app.MediaRouteButton mMediaRouteButton;
+    private MenuItem mediaRouteMenuItem;
+    private CastContext mCastContext;
+    private CastSession mCastSession;
+    private SessionManager mSessionManager;
+    private SessionManagerListener mSessionManagerListener = new SessionManagerListennerImpl();
+    private MediaMetadata videoMetadata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exoplayer_player);
+
+        //CAST
+        try {
+            mCastContext = CastContext.getSharedInstance(this);
+            mSessionManager = mCastContext.getSessionManager();
+
+            MediaRouteSelector mMediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(CastMediaControlIntent.categoryForCast(getString(R.string.app_id))).build();
+            mMediaRouteButton =(MediaRouteButton) findViewById(R.id.media_route_button);
+            mMediaRouteButton.setRouteSelector(mMediaRouteSelector);
+            CastButtonFactory.setUpMediaRouteButton(this, mMediaRouteButton);
+            Log.e("","Exception CastButtonFactory. : " + this + mMediaRouteButton);
+
+        }catch (Exception e){
+
+            Log.e("","Exception cast : "+e);
+        }
+
+        try{
+            videoMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_TV_SHOW);
+            videoMetadata.putString(MediaMetadata.KEY_TITLE, "Total Player");
+            videoMetadata.putString(MediaMetadata.KEY_SUBTITLE, "");
+        }catch (Exception e){
+            Log.e("","Exception videomNetadata : "+e);
+        }
 
         //---
         // Si la versión android es menor que Jellybean, usa este llamado para esconder la barra de estatus.
@@ -92,6 +137,18 @@ public class ExoplayerPlayer extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         pausePlayer();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try{
+            mMediaRouteButton.performClick();
+            //mCastSession = mSessionManager.getCurrentCastSession();
+            //mSessionManager.addSessionManagerListener(mSessionManagerListener);
+           // mMediaRouteButton.setVisibility(View.VISIBLE);
+        }catch (Exception e){
+            Log.e("","Exception resume : "+e);
+        }
     }
     @Override
     public void onBackPressed() {
@@ -189,4 +246,43 @@ public class ExoplayerPlayer extends AppCompatActivity {
             return mediaSource;
     }
 
+    private class SessionManagerListennerImpl implements SessionManagerListener {
+
+
+        @Override
+        public void onSessionStarting(Session session) {
+
+        }
+
+        @Override
+        public void onSessionStarted(Session session, String s) {
+            mCastSession = mSessionManager.getCurrentCastSession();
+            loadMedia(mCastSession);
+        }
+        private void loadMedia(CastSession castSession) {
+            MediaInfo mediaInfo = new MediaInfo.Builder(uri).setStreamType(MediaInfo.STREAM_TYPE_BUFFERED).setContentType("videos/hls").setMetadata(videoMetadata).build();
+            RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
+            remoteMediaClient.load(mediaInfo);
+        }
+        @Override
+        public void onSessionStartFailed(Session session, int i) {}
+
+        @Override
+        public void onSessionEnding(Session session) {}
+
+        @Override
+        public void onSessionEnded(Session session, int i) {}
+
+        @Override
+        public void onSessionResuming(Session session, String s) {}
+
+        @Override
+        public void onSessionResumed(Session session, boolean b) {}
+
+        @Override
+        public void onSessionResumeFailed(Session session, int i) {}
+
+        @Override
+        public void onSessionSuspended(Session session, int i) {}
+    }
 }

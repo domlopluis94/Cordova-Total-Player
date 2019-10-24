@@ -8,4 +8,39 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+        <style name="Exo">
+            <item name="android:background">@null</item>
+            <item name="android:layout_width">@dimen/button_width</item>
+            <item name="android:layout_height">@dimen/button_height</item>
+            <item name="android:padding">@dimen/padding</item>
+            <item name="android:layout_marginLeft">@dimen/padding</item>
+            <item name="android:layout_marginRight">@dimen/padding</item>
+            <item name="android:layout_gravity">center</item>
+            <item name="android:adjustViewBounds">true</item>
+            <item name="android:scaleType">centerInside</item>
+        </style>
+
+        <style name="Exo.Previous">
+            <item name="android:src">@drawable/previous</item>
+        </style>
+
+        <style name="Exo.Next">
+            <item name="android:src">@drawable/next</item>
+        </style>
+
+        <style name="Exo.FastForward">
+            <item name="android:src">@drawable/fastforward</item>
+        </style>
+
+        <style name="Exo.Rewind">
+            <item name="android:src">@drawable/rewind</item>
+        </style>
+
+        <style name="Exo.Play">
+            <item name="android:src">@drawable/play</item>
+        </style>
+
+        <style name="Exo.Pause">
+            <item name="android:src">@drawable/pause</item>
+        </style>
 </resources>

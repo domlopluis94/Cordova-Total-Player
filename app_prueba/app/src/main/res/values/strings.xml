@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">TotalPlayerExample</string>
-    <string name="app_id"></string>
+    <string name="app_id">CD79215B</string>
     <string name="media_route_menu_title">playertotal</string>
+    <item name="exo_buttons" type="id"/>
+    <item name="exo_image" type="id"/>
+    <item name="exo_title" type="id"/>
+    <item name="exo_subtitle" type="id"/>
+    <item name="exo_timebar" type="id"/>
+    <item name="exo_buffering" type="id"/>
+    <dimen name="button_width">96dp</dimen>
+    <dimen name="button_height">96dp</dimen>
+    <dimen name="padding">12dp</dimen>
+    <color name="background_color">#cc000000</color>
+    <color name="foreground_color">@android:color/white</color>
+    <color name="accent_color">#3399CC</color>
 </resources>
